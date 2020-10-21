@@ -10,16 +10,28 @@
   <body>
     <div class="container">
       <form class="search-form" id="search-form">
-        <input
-          type="text"
-          name="query"
-          autocomplete="off"
-          placeholder="Search images..."
-        />
+        <div class="form-wrap">
+          <input
+            type="text"
+            name="query"
+            autocomplete="off"
+            placeholder="Search images..."
+          />
+          <select name="select" id="" class="select">
+            <option value="all">all</option>
+            <option value="photo">photo</option>
+            <option value="illustration">illustration</option>
+            <option value="vector">vector</option>
+          </select>
+        </div>
         <p class="search-form__header"></p>
       </form>
 
       <ul class="gallery"></ul>
+
+      <button type="button" class="btn" data-action="load-more">
+        Load More
+      </button>
     </div>
   </body>
 </html>

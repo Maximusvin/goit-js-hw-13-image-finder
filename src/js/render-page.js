@@ -1,59 +1,40 @@
 import cardImgTMPL from '../templates/cardImg.hbs';
+
 const imgCardRef = document.querySelector('.gallery');
 const searchFormRef = document.querySelector('#search-form');
 const headerFormRef = document.querySelector('.search-form__header')
-import api from './apiService';
+const loadMoreBtnRef = document.querySelector('[data-action="load-more"]')
 
 
-searchFormRef.addEventListener('submit', hendlerInput)
-
-let message = null;
+searchFormRef.addEventListener('submit', hendlerInput);
+loadMoreBtnRef.addEventListener('click', getFetchData)
 
 function hendlerInput(e){    
-        e.preventDefault();  
-        const inputValue = e.currentTarget.query.value.trim();  
-        message = inputValue;
-
-        if(!inputValue){
-            error404();
-            return;
-        }
-
-        getFetchData(inputValue);
+        e.preventDefault();                
+        apiService.resetPage();
+        apiService.query = e.currentTarget.query.value.trim();  
+        apiService.selectValueData = e.currentTarget.select.value;
+        clearInput();  
+        apiService.inputValueData ? getFetchData() : error404();
 }
 
-function verification(data) {    
-    if(data.hits[0]){
-        renderingImgCard(data);
-        headerFormRef.innerHTML = `You are viewing images in the category: <span>${message}</span>`;
-        return
-    }  
-    clearInput();    
-    headerFormRef.innerHTML = 'specify the request more correctly';
-    headerFormRef.classList.add('red');
-    imgCardRef.innerHTML = '';
+function renderingImgCard(hits){      
+    hits[0] ? imgCardRef.insertAdjacentHTML('beforeend', cardImgTMPL(hits)) : error404();
 }
 
-function renderingImgCard(data){    
-    clearInput();    
-    imgCardRef.innerHTML = cardImgTMPL(data.hits);
+function clearInput() {  
+    searchFormRef.query.value = '';   
+    headerFormRef.innerHTML = ''; 
+    imgCardRef.innerHTML = ''; 
 }
 
-function clearInput() {
-    searchFormRef.query.value = '';
-    searchFormRef.query.blur();
-    headerFormRef.classList.remove('red');
-}
-
-function getFetchData(value){
-    api.fetchContent(value).then(verification)
+function getFetchData(){
+    apiService.fetchContent().then(renderingImgCard)
     .catch(error404)
 }
 
-function error404(err){
+function error404(){ 
     clearInput();
-    imgCardRef.innerHTML = '';  
     headerFormRef.innerHTML = 'specify the request more correctly';
-    headerFormRef.classList.add('red');  
-  }
-
+    headerFormRef.classList.add('red');      
+}
