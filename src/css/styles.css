@@ -49,6 +49,10 @@ h6 {
   margin: 0;
 }
 
+p {
+  margin: 0;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif,
@@ -217,14 +221,17 @@ input[type='radio'].visually-hidden {
 .stats-item {
   display: flex;
   align-items: center;
+  transition: all 0.2s linear;
 }
 
 .material-icons {
   margin-right: 5px;
   color: #fff;
+  transition: all 0.2s linear;
 }
 
-.material-icons:hover {
+.stats-item:hover,
+.stats-item:hover .material-icons {
   color: #00ccff;
 }
 
